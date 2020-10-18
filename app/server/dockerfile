@@ -1,0 +1,17 @@
+# Build Angular Universal App
+FROM node:12-alpine
+
+LABEL maintainer="Yasmany Santalla Pereda <ysantalla88@gmail.com>"
+
+WORKDIR /opt/server
+
+COPY . ./
+RUN npm install
+
+ENV PATH="./node_modules/.bin:$PATH"
+
+RUN npm run build
+
+EXPOSE 3000
+
+CMD ["npm", "run", "start:prod"]

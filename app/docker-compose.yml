@@ -1,0 +1,48 @@
+version: "3.3"
+
+networks:
+  private:
+   ipam:
+      config:
+      - subnet: 172.16.238.0/24
+
+volumes:
+  mongodb:
+
+services:
+  mongodb:
+    image: mongo
+    networks:
+      - "private"
+    volumes:
+      - mongodb:/var/lib/mongodb
+    ports:
+      - 27017
+    restart: always
+
+  server:
+    build: ./server
+    depends_on:
+      - "mongodb"
+    networks:
+      - "private"
+    ports:
+      - "3000:3000"
+    environment:
+      MONGODB_URI: "mongodb://mongodb:27017/user"
+      PORT: 3000
+      
+    command: "npm run start:prod"
+    restart: "unless-stopped"
+
+  client:
+    build: ./client
+    depends_on:
+      - "server"
+    networks:
+      - "private"
+    ports:
+      - "4000:4000"
+      
+    command: "npm run serve:ssr"
+    restart: "unless-stopped"

@@ -1,0 +1,53 @@
+<div *ngIf="loading">
+  <mat-progress-bar value="indeterminate" color="warn"></mat-progress-bar>
+</div>
+<br />
+<div class="container" fxLayout="row" fxLayoutAlign="center center">
+  <div class="item" fxFlex="30%" fxFlex.xs="90%" fxFlex.lt-md="90%">
+    <form [formGroup]="addForm" #f="ngForm" (ngSubmit)="onAdd()" class="form">
+      <mat-card class="card">
+        <mat-toolbar color="primary">
+          <h1 class="mat-h1">Add gateway</h1>
+        </mat-toolbar>
+        <br />
+        <mat-card-content>
+          <mat-form-field class="full-width">
+            <input matInput #name type="text" placeholder="Gateway name" formControlName="name" required>
+            <mat-error>
+              Name required
+            </mat-error>
+          </mat-form-field>
+
+          <br/>
+          <br/>
+
+          <mat-form-field class="full-width">
+            <input matInput #ipAddress type="text" placeholder="IP address" formControlName="ipAddress" required>
+            <mat-error>
+              Ip address invalid
+            </mat-error>
+          </mat-form-field>
+
+          <br/>
+          <br/>
+
+          <mat-form-field class="full-width">
+            <input matInput #serialNumber type="text" placeholder="Serial Number" formControlName="serialNumber" required>
+            <mat-error>
+              Serial number invalid
+            </mat-error>
+          </mat-form-field>
+
+          <br/>
+
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!addForm.valid" aria-label="login">
+            <mat-icon>add</mat-icon>
+            <span>Add</span>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+  </div>
+</div>
