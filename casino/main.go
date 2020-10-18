@@ -1,14 +1,17 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
-func totalAmountOfFullDecks(cards []Card, totalCardsInDecks int) int {
+func totalAmountOfFullDecks(cards []Card, totalCardsInDecks int) (int, error) {
 	maxDecksCard := 0
 
 	totalCardMap := make(map[string]int)
 
 	for i := 0; i < len(cards); i++ {
-		key := fmt.Sprintf("%v-%v", cards[i].suit, cards[i].value)
+		key := fmt.Sprintf("%v-%v", cards[i].Suit, cards[i].Value)
 		totalCardMap[key]++
 
 		if totalCardMap[key] > maxDecksCard {
@@ -16,16 +19,18 @@ func totalAmountOfFullDecks(cards []Card, totalCardsInDecks int) int {
 		}
 	}
 
-	if len(totalCardMap) < totalCardsInDecks {
-		return 0
+	if len(totalCardMap) == totalCardsInDecks {
+		return maxDecksCard, nil
+	} else if len(totalCardMap) > totalCardsInDecks {
+		return 0, errors.New("Invalid total of cards")
 	}
-
-	return maxDecksCard
+	return 0, nil
 }
 
+// Card struct
 type Card struct {
-	suit  string
-	value string
+	Suit  string
+	Value string
 }
 
 func main() {
@@ -45,10 +50,17 @@ func main() {
 		fmt.Scanf("%v-%v", &suit, &value)
 
 		cards = append(cards, Card{
-			suit:  suit,
-			value: value,
+			Suit:  suit,
+			Value: value,
 		})
 	}
 
-	fmt.Println(totalAmountOfFullDecks(cards, totalCardsInDecks))
+	total, err := totalAmountOfFullDecks(cards, totalCardsInDecks)
+
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(total)
+	}
+
 }

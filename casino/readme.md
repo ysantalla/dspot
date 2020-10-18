@@ -26,3 +26,6 @@
 
 ### Your output should be the total amount of full decks, ie:
 4
+
+## Comand to Run Test
+$ go test ./... -v -count=1
