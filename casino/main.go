@@ -7,7 +7,6 @@ import (
 
 func totalAmountOfFullDecks(cards []Card, totalCardsInDecks int) (int, error) {
 	maxDecksCard := 0
-
 	totalCardMap := make(map[string]int)
 
 	for i := 0; i < len(cards); i++ {
@@ -19,12 +18,12 @@ func totalAmountOfFullDecks(cards []Card, totalCardsInDecks int) (int, error) {
 		}
 	}
 
-	if len(totalCardMap) == totalCardsInDecks {
-		return maxDecksCard, nil
+	if len(totalCardMap) < totalCardsInDecks {
+		return 0, nil
 	} else if len(totalCardMap) > totalCardsInDecks {
 		return 0, errors.New("Invalid total of cards")
 	}
-	return 0, nil
+	return maxDecksCard, nil
 }
 
 // Card struct
