@@ -58,7 +58,7 @@ var casinoDataTests = []struct {
 			},
 		},
 		3,
-		2,
+		1,
 	},
 }
 

@@ -6,15 +6,17 @@ import (
 )
 
 func totalAmountOfFullDecks(cards []Card, totalCardsInDecks int) (int, error) {
-	maxDecksCard := 0
 	totalCardMap := make(map[string]int)
+	maxDecksCard := len(cards) / totalCardsInDecks
 
 	for i := 0; i < len(cards); i++ {
 		key := fmt.Sprintf("%v-%v", cards[i].Suit, cards[i].Value)
 		totalCardMap[key]++
+	}
 
-		if totalCardMap[key] > maxDecksCard {
-			maxDecksCard = totalCardMap[key]
+	for _, value := range totalCardMap {
+		if value < maxDecksCard {
+			maxDecksCard = value
 		}
 	}
 
