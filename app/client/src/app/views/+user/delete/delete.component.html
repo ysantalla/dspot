@@ -1,0 +1,27 @@
+<div *ngIf="loading">
+  <mat-progress-bar value="indeterminate" color="warn"></mat-progress-bar>
+</div>
+<br />
+<div class="container" fxLayout="row" fxLayoutAlign="center center">
+  <div class="item" fxFlex="70%" fxFlex.xs="90%" fxFlex.lt-md="90%">
+      <mat-card class="card">
+        <mat-toolbar color="primary">
+          <h3 class="mat-h3">User delete</h3>
+        </mat-toolbar>
+        <br />
+        <mat-card-content>
+
+          <h1 class="mat-h1">You are shure that you want delete user with id {{userID}}?</h1>
+
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" type="button" (click)="delete()">
+            <span>ok</span>
+          </button>
+          <button mat-raised-button color="accent" type="button" routerLink="" aria-label="">
+            <span>Cancel</span>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+  </div>
+</div>

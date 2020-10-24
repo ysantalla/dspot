@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
   apiURL: 'http://localhost:3000',
-  appName: 'Gateway Musala'
+  appName: 'Dspot APP'
 };

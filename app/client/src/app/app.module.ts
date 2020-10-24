@@ -20,7 +20,7 @@ import { SharedModule } from '@app/shared/shared.module';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./views/+gateway/gateway.module').then(m => m.GatewayModule)
+    loadChildren: () => import('./views/+user/user.module').then(m => m.UserModule)
   },
 ];
 

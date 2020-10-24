@@ -1,0 +1,105 @@
+<div
+  class="container mat-elevation-z8"
+  style="padding-left: 5px; padding-right: 5px"
+>
+  <br />
+
+  <section>
+    <div class="button-row">
+      <button mat-raised-button color="primary" routerLink="user/create">
+        Add User
+      </button>
+    </div>
+  </section>
+
+  <br />
+
+  <div class="loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    <div class="rate-limit-reached" *ngIf="isRateLimitReached">
+      Project API rate limit has been reached. It will be reset in one minute.
+    </div>
+  </div>
+
+  <div class="table-container">
+    <mat-table
+      mat-table
+      [dataSource]="data"
+      class="table"
+      matSort
+      matSortActive="firstname"
+      matSortDirection="asc"
+    >
+      <!-- User firstname Definition -->
+      <ng-container matColumnDef="firstname">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Firstname </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.firstname }} </mat-cell>
+      </ng-container>
+
+      <!-- lastname Definition -->
+      <ng-container matColumnDef="lastname">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Lastname </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.lastname }} </mat-cell>
+      </ng-container>
+
+      <!-- email Definition -->
+      <ng-container matColumnDef="email">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.email }} </mat-cell>
+      </ng-container>
+
+      <!-- age Definition -->
+      <ng-container matColumnDef="age">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Age </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.age }} </mat-cell>
+      </ng-container>
+
+      <!-- details Definition -->
+      <ng-container matColumnDef="details">
+        <mat-header-cell *matHeaderCellDef fxFlex="7"> Details </mat-header-cell>
+        <mat-cell *matCellDef="let row" fxFlex="7">
+          <button mat-icon-button color="primary" [routerLink]="['user', row._id, 'details']">
+            <mat-icon>visibility</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <!-- update Definition -->
+      <ng-container matColumnDef="update">
+        <mat-header-cell *matHeaderCellDef fxFlex="7"> Update </mat-header-cell>
+        <mat-cell *matCellDef="let row" fxFlex="7">
+          <button mat-icon-button color="accent" [routerLink]="['user', row._id, 'update']">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <!-- delete Definition -->
+      <ng-container matColumnDef="delete">
+        <mat-header-cell *matHeaderCellDef fxFlex="7"> Delete </mat-header-cell>
+        <mat-cell *matCellDef="let row" fxFlex="7">
+          <button mat-icon-button color="warn" [routerLink]="['user', row._id, 'delete']">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+
+
+      <!-- Header and Row Declarations -->
+      <mat-header-row
+        *matHeaderRowDef="displayedColumns"
+      ></mat-header-row>
+      <mat-row
+        *matRowDef="
+          let row;
+          columns: displayedColumns"
+      ></mat-row>
+    </mat-table>
+
+    <mat-paginator
+      [length]="resultsLength"
+      [pageSize]="itemsxpage"
+    ></mat-paginator>
+  </div>
+</div>

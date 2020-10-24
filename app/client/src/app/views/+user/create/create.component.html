@@ -3,18 +3,18 @@
 </div>
 <br />
 <div class="container" fxLayout="row" fxLayoutAlign="center center">
-  <div class="item" fxFlex="30%" fxFlex.xs="90%" fxFlex.lt-md="90%">
+  <div class="item" fxFlex="40%" fxFlex.xs="90%" fxFlex.lt-md="90%">
     <form [formGroup]="addForm" #f="ngForm" (ngSubmit)="onAdd()" class="form">
       <mat-card class="card">
         <mat-toolbar color="primary">
-          <h1 class="mat-h1">Add gateway</h1>
+          <h1 class="mat-h1">Add User</h1>
         </mat-toolbar>
         <br />
         <mat-card-content>
           <mat-form-field class="full-width">
-            <input matInput #name type="text" placeholder="Gateway name" formControlName="name" required>
+            <input matInput #name type="text" placeholder="User firstname" formControlName="firstname" required>
             <mat-error>
-              Name required
+              Firstame required
             </mat-error>
           </mat-form-field>
 
@@ -22,9 +22,9 @@
           <br/>
 
           <mat-form-field class="full-width">
-            <input matInput #ipAddress type="text" placeholder="IP address" formControlName="ipAddress" required>
+            <input matInput #lastname type="text" placeholder="User lastname" formControlName="lastname" required>
             <mat-error>
-              Ip address invalid
+              Lastname required
             </mat-error>
           </mat-form-field>
 
@@ -32,12 +32,27 @@
           <br/>
 
           <mat-form-field class="full-width">
-            <input matInput #serialNumber type="text" placeholder="Serial Number" formControlName="serialNumber" required>
-            <mat-error>
-              Serial number invalid
+            <input matInput #age type="number" placeholder="User age" formControlName="age" required min="0">
+            <mat-error *ngIf="addForm.get('age').hasError('required')">
+              Age required
+            </mat-error>
+
+            <mat-error *ngIf="addForm.get('age').hasError('min')">
+              Invalid age value {{addForm.get('age').getError('min') | json}}
             </mat-error>
           </mat-form-field>
 
+          <br/>
+          <br/>
+
+          <mat-form-field class="full-width">
+            <input matInput #age type="email" placeholder="User email" formControlName="email" required>
+            <mat-error>
+              Email required
+            </mat-error>
+          </mat-form-field>
+
+          <br/>
           <br/>
 
         </mat-card-content>
@@ -51,3 +66,4 @@
     </form>
   </div>
 </div>
+

@@ -1,0 +1,22 @@
+<div *ngIf="loading">
+  <mat-progress-bar value="indeterminate" color="warn"></mat-progress-bar>
+</div>
+<br />
+<div class="container" fxLayout="row" fxLayoutAlign="center center">
+  <div class="item" fxFlex="40%" fxFlex.xs="90%" fxFlex.lt-md="90%">
+      <mat-card class="card">
+        <mat-toolbar color="primary">
+          <h1 class="mat-h1">User details</h1>
+        </mat-toolbar>
+        <br />
+        <mat-card-content>
+
+          {{user | json}}
+
+        </mat-card-content>
+        <mat-card-actions>
+
+        </mat-card-actions>
+      </mat-card>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+<div *ngIf="loading">
+  <mat-progress-bar value="indeterminate" color="warn"></mat-progress-bar>
+</div>
+<br />
+<div class="container" fxLayout="row" fxLayoutAlign="center center">
+  <div class="item" fxFlex="40%" fxFlex.xs="90%" fxFlex.lt-md="90%">
+    <form [formGroup]="updateForm" #f="ngForm" (ngSubmit)="onUpdate()" class="form">
+      <mat-card class="card">
+        <mat-toolbar color="primary">
+          <h1 class="mat-h1">Update User</h1>
+        </mat-toolbar>
+        <br />
+        <mat-card-content>
+          <mat-form-field class="full-width">
+            <input matInput #name type="text" placeholder="User firstname" formControlName="firstname" required>
+            <mat-error>
+              Firstame required
+            </mat-error>
+          </mat-form-field>
+
+          <br/>
+          <br/>
+
+          <mat-form-field class="full-width">
+            <input matInput #lastname type="text" placeholder="User lastname" formControlName="lastname" required>
+            <mat-error>
+              Lastname required
+            </mat-error>
+          </mat-form-field>
+
+          <br/>
+          <br/>
+
+          <mat-form-field class="full-width">
+            <input matInput #age type="number" placeholder="User age" formControlName="age" required min="0">
+            <mat-error *ngIf="updateForm.get('age').hasError('required')">
+              Age required
+            </mat-error>
+
+            <mat-error *ngIf="updateForm.get('age').hasError('min')">
+              Invalid age value {{updateForm.get('age').getError('min') | json}}
+            </mat-error>
+          </mat-form-field>
+
+          <br/>
+          <br/>
+
+          <mat-form-field class="full-width">
+            <input matInput #age type="email" placeholder="User email" formControlName="email" required>
+            <mat-error>
+              Email required
+            </mat-error>
+          </mat-form-field>
+
+          <br/>
+          <br/>
+
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!updateForm.valid" aria-label="">
+            <mat-icon>edit</mat-icon>
+            <span>Update</span>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+  </div>
+</div>
