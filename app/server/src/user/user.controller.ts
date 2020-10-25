@@ -27,9 +27,16 @@ export class UserController {
     type: Number,
     required: false,
   })
-  findAll(
+  @ApiQuery({
+    name: 'order',
+    description: `'name -email', means: order property name ASC and email DESC`,
+    type: String,
+    required: false,
+  })
+  async findAll(
     @Query('limit') limit?: string,
     @Query('offset') offset?: string,
+    @Query('order') order?: string,
   ) {
 
     const paginationQueryDto: PaginationQueryDto = {
@@ -37,7 +44,10 @@ export class UserController {
       offset: +offset,
     };
 
-    return this.userService.findAll(paginationQueryDto);
+    const items = await this.userService.findAll(paginationQueryDto, order);
+    const total = await this.userService.count();
+
+    return {items, total};
   }
 
   @Get(':id')

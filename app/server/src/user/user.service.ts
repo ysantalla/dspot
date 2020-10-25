@@ -18,12 +18,28 @@ export class UserService {
     private readonly userModel: Model<UserDoc>,
   ) {}
 
-  findAll(paginationQuery: PaginationQueryDto) {
+  findAll(paginationQuery: PaginationQueryDto, order = '') {
     const { limit, offset } = paginationQuery;
+
+    const sort: any = {};
+
+    if (order) {
+      for (const field of order.split(' ')) {
+        sort[field.replace('-', '')] = (field.includes('-')) ? -1 : 1;
+      }
+    }
+
     return this.userModel
       .find()
-      .skip(offset)
+      .sort(sort)
+      .skip(offset * limit)
       .limit(limit)
+      .exec();
+  }
+
+  count() {
+    return this.userModel
+      .countDocuments()
       .exec();
   }
 
@@ -62,11 +78,17 @@ export class UserService {
     }
 
     const existingUser = await this.userModel
-      .findOneAndUpdate({ _id: id }, { $set: updateUserDto }, { new: true })
-      .exec();
+      .findOneAndUpdate({ _id: id }, { $set: updateUserDto }, { useFindAndModify: false })
+      .lean(true);
 
     if (!existingUser) {
-      throw new NotFoundException(`User #${id} not found`);
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: `User #${id} not found`,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
     }
     return existingUser;
   }

@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
+import { getModelToken } from '@nestjs/mongoose';
+import { UserDoc } from './entities/user.entity';
 
 describe('UserController', () => {
   let controller: UserController;
@@ -8,7 +10,13 @@ describe('UserController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UserController],
-      providers: [UserService],
+      providers: [
+        UserService,
+        {
+          provide: getModelToken(UserDoc.name),
+          useValue: UserDoc,
+        },
+      ],
     }).compile();
 
     controller = module.get<UserController>(UserController);
