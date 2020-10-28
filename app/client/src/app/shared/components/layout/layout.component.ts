@@ -17,9 +17,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class LayoutComponent implements OnInit {
 
-  isLoggedIn$: Observable<boolean>;
-  firstname$: Observable<string>;
-
   appName = env.appName;
   year = new Date().getFullYear();
   isProd = env.production;
@@ -31,9 +28,7 @@ export class LayoutComponent implements OnInit {
     );
 
   constructor(
-    private breakpointObserver: BreakpointObserver,
-    private snackBar: MatSnackBar,
-    private router: Router) {}
+    private breakpointObserver: BreakpointObserver) {}
 
   ngOnInit(): void {}
 
