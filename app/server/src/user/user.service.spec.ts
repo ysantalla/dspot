@@ -3,7 +3,7 @@ import { createMock } from '@golevelup/nestjs-testing';
 
 import { getModelToken } from '@nestjs/mongoose';
 import { HttpException, NotFoundException } from '@nestjs/common';
-import { Model, DocumentQuery } from 'mongoose';
+import { Model, DocumentQuery, Query } from 'mongoose';
 
 import { UserService } from './user.service';
 import { UserDoc } from './entities/user.entity';
@@ -68,7 +68,6 @@ const userDocArray = [
   mockUserDoc({ _id: '5f9459bcc987103194740b6c', firstname: 'Vitani', lastname: 'lastname', age: 2, email: 'tabby@gmail.com' }),
   mockUserDoc({ _id: '5f9459bcc987103194740b6c', firstname: 'Simba', lastname: 'lastname', age: 14, email: 'lion@gmail.com' }),
 ];
-
 
 describe('UserService', () => {
   let service: UserService;
@@ -151,7 +150,6 @@ describe('UserService', () => {
 
   describe('findOne', () => {
     it('should return the user found', async () => {
-
       jest.spyOn(model, 'findOne').mockReturnValueOnce(
         createMock<DocumentQuery<UserDoc, UserDoc, unknown>>({
           exec: jest
@@ -165,6 +163,18 @@ describe('UserService', () => {
       expect(foundUser).toEqual(findMockUser);
     });
   });
- 
+
+  describe('count', () => {
+    it('should return the user document count', async () => {
+      jest.spyOn(model, 'countDocuments').mockReturnValueOnce(createMock<Query<number>>({
+        exec: jest
+          .fn()
+          .mockResolvedValueOnce(10) 
+      }));
+
+      const countUser = await service.count();
+      expect(countUser).toEqual(10);
+    });
+  }); 
 
 });
