@@ -4,12 +4,16 @@ import {
   HttpStatus,
   HttpException,
 } from '@nestjs/common';
+
+import { InjectModel } from '@nestjs/mongoose';
+
+import { Model, isValidObjectId } from 'mongoose';
+
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { InjectModel } from '@nestjs/mongoose';
-import { UserDoc } from './entities/user.entity';
-import { Model, isValidObjectId } from 'mongoose';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
+
+import { UserDoc } from './entities/user.entity';
 import { User } from './interfaces/user.interface';
 
 @Injectable()
@@ -20,28 +24,33 @@ export class UserService {
   ) {}
 
   findAll(paginationQuery?: PaginationQueryDto, order = ''): Promise<User[]> {
-    const { limit, offset } = paginationQuery;
-
     const sort: any = {};
 
     if (order) {
       for (const field of order.split(' ')) {
-        sort[field.replace('-', '')] = (field.includes('-')) ? -1 : 1;
+        sort[field.replace('-', '')] = field.includes('-') ? -1 : 1;
       }
+    }
+
+    if (paginationQuery) {
+      const { limit, offset } = paginationQuery;
+
+      return this.userModel
+        .find()
+        .sort(sort)
+        .skip(offset * limit)
+        .limit(limit)
+        .exec();
     }
 
     return this.userModel
       .find()
       .sort(sort)
-      .skip(offset * limit)
-      .limit(limit)
       .exec();
   }
 
   count(): Promise<number> {
-    return this.userModel
-      .countDocuments()
-      .exec();
+    return this.userModel.countDocuments().exec();
   }
 
   async findOne(id: string): Promise<User> {
@@ -63,8 +72,7 @@ export class UserService {
   }
 
   create(createUserDto: CreateUserDto): Promise<User> {
-    const user = new this.userModel(createUserDto);
-    return user.save();
+    return this.userModel.create(createUserDto);
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
@@ -79,7 +87,11 @@ export class UserService {
     }
 
     const existingUser = await this.userModel
-      .findOneAndUpdate({ _id: id }, { $set: updateUserDto }, { new: true, useFindAndModify: false })
+      .findOneAndUpdate(
+        { _id: id },
+        { $set: updateUserDto },
+        { new: true, useFindAndModify: false },
+      )
       .lean(true);
 
     if (!existingUser) {
@@ -105,6 +117,6 @@ export class UserService {
       );
     }
 
-    return await this.userModel.deleteOne({_id: id}).lean(true);
+    return await this.userModel.deleteOne({ _id: id }).lean(true);
   }
 }
