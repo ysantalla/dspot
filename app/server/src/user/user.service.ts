@@ -19,7 +19,7 @@ export class UserService {
     private readonly userModel: Model<UserDoc>,
   ) {}
 
-  findAll(paginationQuery: PaginationQueryDto, order = ''): Promise<User[]> {
+  findAll(paginationQuery?: PaginationQueryDto, order = ''): Promise<User[]> {
     const { limit, offset } = paginationQuery;
 
     const sort: any = {};
