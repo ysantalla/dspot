@@ -10,6 +10,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { UserDoc } from './entities/user.entity';
 import { Model, isValidObjectId } from 'mongoose';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
+import { User } from './interfaces/user.interface';
 
 @Injectable()
 export class UserService {
@@ -18,7 +19,7 @@ export class UserService {
     private readonly userModel: Model<UserDoc>,
   ) {}
 
-  findAll(paginationQuery: PaginationQueryDto, order = '') {
+  findAll(paginationQuery: PaginationQueryDto, order = ''): Promise<User[]> {
     const { limit, offset } = paginationQuery;
 
     const sort: any = {};
@@ -37,13 +38,13 @@ export class UserService {
       .exec();
   }
 
-  count() {
+  count(): Promise<number> {
     return this.userModel
       .countDocuments()
       .exec();
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<User> {
     if (!isValidObjectId(id)) {
       throw new HttpException(
         {
@@ -61,12 +62,12 @@ export class UserService {
     return user;
   }
 
-  create(createUserDto: CreateUserDto) {
+  create(createUserDto: CreateUserDto): Promise<User> {
     const user = new this.userModel(createUserDto);
     return user.save();
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     if (!isValidObjectId(id)) {
       throw new HttpException(
         {
@@ -78,7 +79,7 @@ export class UserService {
     }
 
     const existingUser = await this.userModel
-      .findOneAndUpdate({ _id: id }, { $set: updateUserDto }, { useFindAndModify: false })
+      .findOneAndUpdate({ _id: id }, { $set: updateUserDto }, { new: true, useFindAndModify: false })
       .lean(true);
 
     if (!existingUser) {
@@ -93,7 +94,7 @@ export class UserService {
     return existingUser;
   }
 
-  async remove(id: string) {
+  async remove(id: string): Promise<User> {
     if (!isValidObjectId(id)) {
       throw new HttpException(
         {
@@ -104,7 +105,6 @@ export class UserService {
       );
     }
 
-    const user = await this.findOne(id);
-    return user.remove();
+    return await this.userModel.deleteOne({_id: id}).lean(true);
   }
 }
