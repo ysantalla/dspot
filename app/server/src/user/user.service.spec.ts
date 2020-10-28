@@ -273,11 +273,19 @@ describe('UserService', () => {
 
     it('remove user by id', async () => {
       jest.spyOn(model, 'deleteOne').mockReturnValue({
-        lean: jest.fn().mockReturnValue(mockUser()),
+        lean: jest.fn().mockReturnValue({
+          "n": 1,
+          "ok": 1,
+          "deletedCount": 1
+        }),
       } as any);
 
       const deletedUser = await service.remove('5f9459bcc987103194740b6c');
-      expect(deletedUser).toEqual(mockUser());
+      expect(deletedUser).toEqual({
+        "n": 1,
+        "ok": 1,
+        "deletedCount": 1
+      });
     });
   });
 

@@ -106,7 +106,11 @@ export class UserService {
     return existingUser;
   }
 
-  async remove(id: string): Promise<User> {
+  async remove(id: string): Promise<({
+    n: number,
+    ok: number,
+    deletedCount: number
+  })> {
     if (!isValidObjectId(id)) {
       throw new HttpException(
         {
