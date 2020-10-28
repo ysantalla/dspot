@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 import { getModelToken } from '@nestjs/mongoose';
 import { HttpException, NotFoundException } from '@nestjs/common';
-import { Model, DocumentQuery } from 'mongoose';
+import { Model } from 'mongoose';
 
 import { UserService } from './user.service';
 import { UserDoc } from './entities/user.entity';
