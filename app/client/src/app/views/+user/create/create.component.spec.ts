@@ -2,11 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CreateComponent } from './create.component';
 import { UserService } from '../services/user.service';
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { SharedModule } from '@app/shared/shared.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-class MockUserService {
-  isLoggedIn = true;
-  user = { name: 'Test User'};
-}
 
 describe('CreateComponent', () => {
   let component: CreateComponent;
@@ -15,9 +16,17 @@ describe('CreateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [
+        HttpClientModule,
+        BrowserAnimationsModule,
+        SharedModule.forRoot(),
+        FormsModule, ReactiveFormsModule,
+        RouterTestingModule.withRoutes([]),
+      ],
       declarations: [ CreateComponent ],
       providers: [
-        { provide: UserService, useClass: MockUserService }
+        CreateComponent,
+        UserService,
       ]
     })
     .compileComponents();
